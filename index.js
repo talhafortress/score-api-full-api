@@ -20,7 +20,6 @@ function formatLocalDateTime(unix) {
   });
 }
 
-
 // /canli komutu
 bot.command("canli", async (ctx) => {
   try {
