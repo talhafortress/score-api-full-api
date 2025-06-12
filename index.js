@@ -25,16 +25,23 @@ bot.command("canli", async (ctx) => {
   try {
     const response = await fetch(`https://api.football-data-api.com/todays-matches?key=${API_KEY}`);
     const data = await response.json();
+
     const now = Math.floor(Date.now() / 1000);
 
     const liveMatches = data.data.filter((match) => {
       const matchTime = match.date_unix;
       const elapsedMinutes = (now - matchTime) / 60;
-      return matchTime <= now && elapsedMinutes < 120;
+
+      // ✅ Başlamış, henüz bitmemiş, mantıklı aralıkta olanlar
+      return (
+        matchTime <= now &&
+        elapsedMinutes < 180 &&
+        match.status !== "complete"
+      );
     });
 
     if (liveMatches.length === 0) {
-      return ctx.reply("Şu anda canlı maç yok.");
+      return ctx.reply("📭 Şu anda canlı bir maç görünmüyor.");
     }
 
     const buttons = liveMatches.map((match) => {
@@ -42,17 +49,19 @@ bot.command("canli", async (ctx) => {
       const away = match.away_name || "Deplasman";
       const homeScore = match.homeGoalCount ?? "-";
       const awayScore = match.awayGoalCount ?? "-";
+
       const localTime = formatLocalDateTime(match.date_unix);
       const elapsed = Math.floor((now - match.date_unix) / 60);
       const minuteText = elapsed >= 120 ? "Bitmiş" : `${elapsed}'`;
+
       const title = `${home} ${homeScore} - ${awayScore} ${away} | ${minuteText} (${localTime})`;
       return Markup.button.callback(title, `match_${match.id}`);
     });
 
     ctx.reply("📺 Canlı Maçlar:", Markup.inlineKeyboard(buttons, { columns: 1 }));
   } catch (err) {
-    console.error(err);
-    ctx.reply("Bir hata oluştu.");
+    console.error("CANLI MAÇ HATASI:", err);
+    ctx.reply("Bir hata oluştu, canlı maçlar çekilemedi.");
   }
 });
 
