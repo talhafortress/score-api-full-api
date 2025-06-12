@@ -1,0 +1,26 @@
+{
+  "name": "score-api-full-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talhafortress/score-api-full-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/talhafortress/score-api-full-api/issues"
+  },
+  "homepage": "https://github.com/talhafortress/score-api-full-api#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "fs": "^0.0.1-security",
+    "node-fetch": "^2.7.0",
+    "telegraf": "^4.16.3"
+  }
+}
